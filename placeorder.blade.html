@@ -1,0 +1,71 @@
+<?php
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+        <form action="/transact" method="POST">
+            @csrf
+            <table class="table">
+                <thead>
+
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Brand</th>
+                    <th>Model Year</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+
+                </thead>
+
+                <tbody>
+                    <input type="text" name="customer_id" placeholder="customer id">
+                    <?php
+                    $price=0;
+                      $connect = mysqli_connect('localhost', 'root', '', 'protechcorp');
+                    $list = Session::get('cart');
+                    for ($i=0; $i <count($list) ; $i++) { 
+                        $sql = "SELECT * FROM product where product_id =  $list[$i]";
+                        $result = mysqli_query($connect, $sql);
+                            while($row = mysqli_fetch_array($result))
+                            {
+                                 echo '<tr> 
+                                         <td>'.$row['product_name'].'</td>
+                                         <td>'.$row['product_id'].'</td>
+                                         <td>'.$row['brand'].'</td>
+                                         <td>'.$row['model_year'].'</td>
+                                         <td>'.$row['list_price'].'</td>
+                                         <td><input type="hidden" name="product[]" value='.$row['product_id'].'></td>
+                                         <td><input type="number" name="quantity[]" min="0"></td>
+                                         
+                                       </tr> ';
+                                       $price = $price + $row['list_price'];
+                            }
+
+                                    echo "<input type='hidden' name='amount_total' value='$price'";  
+                                      
+                            }
+                            
+                    ?>
+                    
+        </tbody>
+    </table>
+    <input type="text" name="paid" placeholder="tendered">
+<button type="submit">Submit</button>
+</form>
+</body>
+
+</html>
