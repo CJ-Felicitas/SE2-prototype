@@ -41,23 +41,14 @@
         <form class="border shadow p-3 rounded" action="/changePW" method="post" style="width: 450px;">
 
 
-            @csrf
+        
             <h1 class="text-center p-3">Welcome New Employee</h1>
             <div class="alert alert-info alert-dismissible fade show" role="alert">
                 Please input your desired credentials so that you can start using the system and get to work.
             </div>
 
 
-            @if ($message = Session::get('nousers'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{$message}}
-            </div>
-            @endif
-            @if ($message = Session::get('exist'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{$message}}
-            </div>
-            @endif
+        
             <div class="mb-3">
                 <label for="name" class="form-label">First Name</label>
                 <input type="text" class="form-control" name="fname" id="username">
